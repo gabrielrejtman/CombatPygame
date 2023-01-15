@@ -50,36 +50,58 @@ def move_p1():
             player_2_y -= 5 * cos(radians(angle_2))
             player_2_x -= 5 * sin(radians(angle_2))
 
+# makes sure the player won't go through the border
 
-def limit_borders(players, walls,):
-    global player_1_y
-    if players <= walls:
+
+def limit_borders_up(player1, walls, player2, walls2):
+    global player_1_y, player_2_y
+    if player1 <= walls:
         player_1_y = walls
+    if player2 <= walls2:
+        player_2_y = walls2
 
 
-def limit_borders_p2(players, walls):
-    global player_2_y
-    if players <= walls:
-        player_2_y = walls
+def limit_borders_down(player1, walls, player2, wall2):
+    global player_1_y, player_2_y
+    if player1 >= walls:
+        player_1_y = walls
+    if player2 >= wall2:
+        player_2_y = wall2
+
+
+def limit_borders_left(player1, walls, player2, wall2):
+    global player_1_x, player_2_x
+    if player1 <= walls:
+        player_1_x = walls
+    if player2 <= wall2:
+        player_2_x = wall2
+
+
+def limit_borders_right(player1, wall, player2, wall2):
+    global player_1_x, player_2_x
+    if player1 >= wall:
+        player_1_x = wall
+    if player2 >= wall2:
+        player_2_x = wall2
 
 
 # player 1 ball
-ball_p1 = pygame.image.load("Player1 - Sprite.png")
-ball_size = (5, 5)
-ball_p1 = pygame.transform.scale(ball_p1, ball_size)
-ball_p1_x = 50
-ball_p1_y = 150
-ball_p1_dx = 1
-ball_p1_dy = 1
+# ball_p1 = pygame.image.load("Player1 - Sprite.png")
+# ball_size = (5, 5)
+# ball_p1 = pygame.transform.scale(ball_p1, ball_size)
+# ball_p1_x = 50
+# ball_p1_y = 150
+# ball_p1_dx = 1
+# ball_p1_dy = 1
 
 # player 2 ball
-ball_p2 = pygame.draw.circle()
-ball_size = (5, 5)
-ball_p2 = pygame.transform.scale(ball_p2, ball_size)
-ball_p2_x = 50
-ball_p2_y = 150
-ball_p2_dx = 1
-ball_p2_dy = 1
+# ball_p2 = pygame.draw.circle()
+# ball_size = (5, 5)
+# ball_p2 = pygame.transform.scale(ball_p2, ball_size)
+# ball_p2_x = 50
+# ball_p2_y = 150
+# ball_p2_dx = 1
+# ball_p2_dy = 1
 
 # player 1 score
 score_p1_font = pygame.font.SysFont('IMPACT', 50)
@@ -116,8 +138,10 @@ while run:
     pygame.draw.line(screen, Yellow, (border_thickness / 2, score_space), (border_thickness / 2, screen_size[1]),
                      border_thickness)
 
-    limit_borders(player_1_y, score_space)
-    limit_borders_p2(player_2_y, score_space)
+    limit_borders_up(player_1_y, score_space, player_2_y, score_space)
+    limit_borders_down(player_1_y, 650, player_2_y, 650)
+    limit_borders_left(player_1_x, 20, player_2_x, 20)
+    limit_borders_right(player_1_x, 1250, player_2_x, 1250)
     move_p1()
     # show elements on screen
     surf = pygame.transform.rotate(player_1, angle_1)
@@ -126,8 +150,8 @@ while run:
     screen.blit(surf2, (player_2_x, player_2_y))
     screen.blit(score_p1_text, score_p1_text_rect)
     screen.blit(score_p2_text, score_p2_text_rect)
-    screen.blit(ball_p1, (ball_p1_x, ball_p1_y))
-    screen.blit(ball_p2, (ball_p2_x, ball_p2_y))
+    # screen.blit(ball_p1, (ball_p1_x, ball_p1_y))
+    # screen.blit(ball_p2, (ball_p2_x, ball_p2_y))
 
     pygame.display.flip()
-    game_clock.tick(100)
+    game_clock.tick(60)
